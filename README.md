@@ -1,71 +1,78 @@
 # 🛡️ Network Sniffer 🌐
 
-Este projeto consiste no desenvolvimento de um **Sniffer de Rede** em Python, utilizando a biblioteca **Scapy** para captura e manipulação de pacotes e **CustomTkinter** para uma interface gráfica (GUI) moderna e intuitiva.
+This project consists of the development of a **Network Sniffer** in Python, using the **Scapy** library for packet capture and manipulation, and **CustomTkinter** for a modern and intuitive graphical user interface (GUI).
 
-A aplicação permite capturar, analisar e visualizar pacotes de rede em tempo real.
+The application allows users to capture, analyze, and visualize network packets in real time.
 
 ---
 
-## 🚀 Funcionalidades
+## 🚀 Features
 
-O sistema implementa as seguintes capacidades principais:
+The system implements the following core capabilities:
 
-* **Captura em Tempo Real**
-  Monitorização de tráfego instantânea com Scapy.
+* **Real-Time Packet Capture**
+  Instant network traffic monitoring using Scapy.
 
-* **Análise de cabeçalho por nível protocolar**
-  Decomposição dos pacotes segundo a pilha protocolar:
+* **Protocol Layer Header Analysis**
+  Packet decomposition according to the protocol stack:
 
   * **Layer 2:** Ethernet, ARP
   * **Layer 3:** IPv4, IPv6, ICMP
   * **Layer 4:** TCP, UDP
 
-* **Deteção de Protocolos de Aplicação**
-  Identificação de HTTP, HTTPS, SSH, FTP, DNS, DHCP e NTP através da análise de portas capturadas nos pacotes TCP e UDP capturados.
+* **Application Protocol Detection**
+  Identification of HTTP, HTTPS, SSH, FTP, DNS, DHCP, and NTP through analysis of the ports found in captured TCP and UDP packets.
 
-* **Interface Gráfica Interativa**
-  Visualização organizada dos pacotes capturados, com sistema de paginação para melhor organização.
+* **Interactive Graphical Interface**
+  Organized visualization of captured packets, including a pagination system for improved navigation.
 
-* **Sistema de Filtragem Avançado**
-  Permite isolar tráfego com expressões lógicas.
+* **Advanced Filtering System**
+  Allows traffic isolation using logical expressions.
 
-* **Exportação de Dados**
-  Guarda capturas em formato **JSON**, tanto por clique do utilizador, como em modo live, cada vez que se inicia a captura.
+* **Data Export**
+  Saves captures in **JSON** format, either through user interaction or automatically in live mode whenever a capture session starts.
 
 ---
 
-## 🔍 Sistema de Filtros
+## 🔍 Filtering System
 
-Permite criar expressões lógicas para filtrar o tráfego.
+Allows the creation of logical expressions to filter traffic.
 
-### Operadores Suportados
+### Supported Operators
 
-| Tipo        | Operadores                       |
-| ----------- | -------------------------------- |
-| Comparação  | `==`, `!=`, `>`, `<`, `>=`, `<=` |
-| Lógicos     | `and`, `or`                      |
-| Agrupamento | `( )`                            |
+| Type       | Operators                        |
+| ---------- | -------------------------------- |
+| Comparison | `==`, `!=`, `>`, `<`, `>=`, `<=` |
+| Logical    | `and`, `or`                      |
+| Grouping   | `( )`                            |
 
-### Campos Disponíveis
+### Available Fields
 
-* `protocol` — protocolo do pacote
-* `src` — endereço de origem (IP/MAC)
-* `dst` — endereço de destino (IP/MAC)
-* `length` — tamanho do pacote (bytes)
-* `packet_id` — identificador único
-* `timestamp` — instante da captura
+* `protocol` — packet protocol
+* `src` — source address (IP/MAC)
+* `dst` — destination address (IP/MAC)
+* `length` — packet size (bytes)
+* `packet_id` — unique identifier
+* `timestamp` — capture timestamp
 
 ### Deep Packet Inspection
 
-Acesso a campos por camada com `layerX.campo`. Possibilidades:
+Access packet fields by layer using `layerX.field`.
+
 ### Layer4:
+
+```text
 layer4.protocol
 layer4.app_protocol
 layer4.srcPrt
 layer4.dstPrt
+```
 
 ### Layer3:
+
 `IPv4:`
+
+```text
 layer3.ip.version
 layer3.ip.header_length
 layer3.ip.len
@@ -76,8 +83,11 @@ layer3.ip.protocol
 layer3.ip.ttl
 layer3.ip.src
 layer3.ip.dst
+```
 
 `IPv6:`
+
+```text
 layer3.ipv6.traffic_class
 layer3.ipv6.flow_label
 layer3.ipv6.payload_length
@@ -85,25 +95,36 @@ layer3.ipv6.next_header
 layer3.ipv6.hop_limit
 layer3.ipv6.src
 layer3.ipv6.dst
+```
 
 `ICMP:`
+
+```text
 layer3.icmp.protocol
 layer3.icmp.type
 layer3.icmp.code
+```
 
 ### Layer2:
+
 `ARP:`
+
+```text
 layer2.arp.protocol
 layer2.arp.sender_mac
 layer2.arp.target_mac
+```
 
 `Ethernet`
+
+```text
 layer2.arp.protocol
 layer2.arp.src_mac
 layer2.arp.dst_mac
 layer2.arp.type
+```
 
-**Exemplos:**
+**Examples:**
 
 ```python
 protocol == TCP
@@ -116,7 +137,7 @@ layer3.ip.ttl > 64
 
 ---
 
-## 🐧 Instalação (Linux - Ubuntu/Debian)
+## 🐧 Installation (Linux - Ubuntu/Debian)
 
 ```bash
 sudo apt update
@@ -131,7 +152,7 @@ pip install scapy customtkinter pillow cryptography
 
 ---
 
-## 🪟 Instalação (Windows)
+## 🪟 Installation (Windows)
 
 ```bash
 pip install scapy customtkinter pillow cryptography
@@ -139,9 +160,9 @@ pip install scapy customtkinter pillow cryptography
 
 ---
 
-## 🛠️ Como Executar
+## 🛠️ How to Run
 
-⚠️ É necessário executar com privilégios de administrador/root.
+⚠️ The application must be executed with administrator/root privileges.
 
 ### Linux
 
@@ -151,7 +172,7 @@ sudo ./venv/bin/python main.py
 
 ### Windows
 
-Executar o terminal como administrador:
+Run the terminal as Administrator:
 
 ```bash
 python main.py
@@ -159,26 +180,27 @@ python main.py
 
 ---
 
-## 🌐 Seleção de Interface
+## 🌐 Interface Selection
 
-Antes de iniciar a captura, selecione uma interface de rede válida (ex: `eth0`, `wlan0`).
-As interfaces são detetadas automaticamente pelo Scapy.
+Before starting a capture, select a valid network interface (e.g., `eth0`, `wlan0`).
+
+The available interfaces are automatically detected by Scapy.
 
 ---
 
-## 🧪 Execução no CORE
+## 🧪 Running in CORE
 
-Para exportar a GUI:
+To export the GUI:
 
-### Sistema anfitrião
+### Host System
 
 ```bash
 xhost +
 ```
 
-### Nó CORE
+### CORE Node
 
-* No terminal, ir até à pasta onde se encontra o sniffer 
+* In the terminal, navigate to the folder containing the sniffer
 
 ```bash
 export DISPLAY=:0
@@ -187,15 +209,15 @@ sudo -E python main.py
 
 ---
 
-## 💾 Exportação
+## 💾 Exporting Data
 
-* Os pacotes são guardados automaticamente num ficheiro JSON
-* Pode exportar apenas os resultados filtrados através do botão de exportação
+* Packets are automatically saved to a JSON file
+* Only filtered results can be exported using the export button
 
 ---
 
-## ⚠️ Notas Importantes
+## ⚠️ Important Notes
 
-* **Permissões:** Sem privilégios de administrador, a captura falha
-* **Interface:** Escolha a interface correta
-* **Performance:** Os filtros afetam apenas a visualização, não a captura
+* **Permissions:** Packet capture will fail without administrator privileges
+* **Interface:** Make sure the correct network interface is selected
+* **Performance:** Filters affect only the visualization, not the packet capture process
