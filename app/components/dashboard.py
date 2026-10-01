@@ -364,19 +364,30 @@ def createAccordion(parent):
     )
     protocol_label.grid(row=0, column=1, padx=5)
 
-    [details, tabview] = createDetailView(container)
-    detailsOpen = False
+    accordion_state = {
+        "details": None,
+        "tabview": None,
+        "packet": None,
+        "open": False,
+    }
 
     def onClick(event):
-        nonlocal detailsOpen
-        if detailsOpen:
-            details.grid_remove()
+        if accordion_state["open"]:
+            accordion_state["details"].grid_remove()
             icon_label.configure(image=images.createForwardIcon(90))
-            detailsOpen = False
+            accordion_state["open"] = False
         else:
-            details.grid(row=1, column=0, sticky="ew", padx=10, pady=(0, 10))
+            if accordion_state["details"] is None:
+                details, tabview = createDetailView(container)
+                accordion_state["details"] = details
+                accordion_state["tabview"] = tabview
+            if accordion_state["packet"] is not None:
+                editDetailView(accordion_state["tabview"], accordion_state["packet"])
+            accordion_state["details"].grid(
+                row=1, column=0, sticky="ew", padx=10, pady=(0, 10)
+            )
             icon_label.configure(image=images.createForwardIcon(0))
-            detailsOpen = True
+            accordion_state["open"] = True
 
     [button1, label_button1] = Button(header, "Fonte:", "", onClick, True)
     button1.grid(row=0, column=2, padx=5)
@@ -411,7 +422,7 @@ def createAccordion(parent):
         label_button3,
         label_button4,
         timestamp_label,
-        tabview,
+        accordion_state,
     ]
 
 
@@ -473,7 +484,10 @@ def editAccordion(
     parent[5].configure(text=summary)
     parent[6].configure(text=timestamp)
 
-    editDetailView(parent[7], packet)
+    accordion_state = parent[7]
+    accordion_state["packet"] = packet
+    if accordion_state["open"]:
+        editDetailView(accordion_state["tabview"], packet)
     parent[0].pack(pady=(10, 0), fill="x")
 
 
